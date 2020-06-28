@@ -14,6 +14,7 @@ class CounterUpdated extends CounterState {
   CounterUpdated(int counter) : super(counter);
 }
 
+// TODO connect with  firebase
 class CounterCubit extends Cubit<CounterState> {
   CounterCubit() : super(CounterInitial(0));
 
