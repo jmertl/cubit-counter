@@ -35,11 +35,11 @@ class CounterPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                 ),
-                onPressed: context.cubit<CounterCubit>().decrement,
+                onPressed: context.cubit<CounterCubit>().getCounters,
                 child: CubitBuilder<CounterCubit, CounterState>(
                     builder: (_, count) {
                   return Text(
-                    '${count.counter - 1}',
+                    '${count}',
                     style: GoogleFonts.montserrat(
                         fontSize: 50, color: const Color(0xffa8a8a8)),
                     textAlign: TextAlign.left,
@@ -49,7 +49,7 @@ class CounterPage extends StatelessWidget {
               CubitBuilder<CounterCubit, CounterState>(
                 builder: (_, count) {
                   return Text(
-                    '${count.counter}',
+                    '${count}',
                     style: GoogleFonts.montserrat(
                         fontSize: 79, color: const Color(0xffffffff)),
                     textAlign: TextAlign.left,
@@ -61,11 +61,11 @@ class CounterPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                 ),
-                onPressed: context.cubit<CounterCubit>().increment,
+                onPressed: context.cubit<CounterCubit>().getCounters,
                 child: CubitBuilder<CounterCubit, CounterState>(
                     builder: (_, count) {
                   return Text(
-                    '${count.counter + 1}',
+                    '${count}',
                     style: GoogleFonts.montserrat(
                         fontSize: 50, color: const Color(0xffa8a8a8)),
                     textAlign: TextAlign.left,
