@@ -26,53 +26,51 @@ class CounterPage extends StatelessWidget {
                   blurRadius: 9)
             ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                padding: EdgeInsets.all(10.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-                onPressed: context.cubit<CounterCubit>().getCounters,
-                child: CubitBuilder<CounterCubit, CounterState>(
-                    builder: (_, count) {
-                  return Text(
-                    '${count}',
-                    style: GoogleFonts.montserrat(
-                        fontSize: 50, color: const Color(0xffa8a8a8)),
-                    textAlign: TextAlign.left,
-                  );
-                }),
-              ),
-              CubitBuilder<CounterCubit, CounterState>(
-                builder: (_, count) {
-                  return Text(
-                    '${count}',
-                    style: GoogleFonts.montserrat(
-                        fontSize: 79, color: const Color(0xffffffff)),
-                    textAlign: TextAlign.left,
-                  );
-                },
-              ),
-              FlatButton(
-                padding: EdgeInsets.all(10.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-                onPressed: context.cubit<CounterCubit>().getCounters,
-                child: CubitBuilder<CounterCubit, CounterState>(
-                    builder: (_, count) {
-                  return Text(
-                    '${count}',
-                    style: GoogleFonts.montserrat(
-                        fontSize: 50, color: const Color(0xffa8a8a8)),
-                    textAlign: TextAlign.left,
-                  );
-                }),
-              ),
-            ],
+          child: CubitBuilder<CounterCubit, CounterState>(
+            builder: (_, state) {
+              if (state is CounterLoaded) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    FlatButton(
+                      padding: EdgeInsets.all(10.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      onPressed: context.cubit<CounterCubit>().getCounters,
+                      child: Text(
+                        '${state.counter.number - 1}',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 50, color: const Color(0xffa8a8a8)),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Text(
+                      '${state.counter.number}',
+                      style: GoogleFonts.montserrat(
+                          fontSize: 79, color: const Color(0xffffffff)),
+                      textAlign: TextAlign.left,
+                    ),
+                    FlatButton(
+                      padding: EdgeInsets.all(10.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      onPressed: context.cubit<CounterCubit>().getCounters,
+                      child: Text(
+                        '${state.counter.number + 1}',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 50, color: const Color(0xffa8a8a8)),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Text(state.toString());
+              }
+            },
           ),
         ),
       ),
