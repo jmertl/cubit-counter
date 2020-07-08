@@ -26,13 +26,24 @@ class CounterCubit extends Cubit<CounterState> {
 
   final UserRepository userRepo;
 
+  Future<void> initCounter() async {
+    final CounterRepository counterRepo =
+        CounterRepository(userRepository: userRepo);
+    emit(CounterLoadInProgress());
+    try {
+      await counterRepo.initCounter();
+    } catch (_) {
+      emit(CounterLoadFailure());
+    }
+  }
+
   Future<void> getCounters() async {
     final CounterRepository counterRepo =
         CounterRepository(userRepository: userRepo);
     emit(CounterLoadInProgress());
     try {
-      final counter = await counterRepo.initCounter();
-      emit(CounterLoaded(counter));
+      final counter = await counterRepo.getData();
+      emit(CounterLoaded(new Counter()));
     } catch (_) {
       emit(CounterLoadFailure());
     }

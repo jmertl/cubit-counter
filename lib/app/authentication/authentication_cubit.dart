@@ -1,5 +1,6 @@
 import 'package:counter/api/user_repository.dart';
 import 'package:cubit/cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class AuthenticationState {}
@@ -25,11 +26,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       final uid = (await userRepo.getUser).uid;
       emit(Authenticated(uid));
     } else {
-      userRepo.anonLogin();
+      await userRepo.anonLogin();
       final isSignedIn = await userRepo.isSignedIn();
       if (isSignedIn) {
-        final uid = (await userRepo.getUser).uid;
-        emit(Authenticated(uid));
+        FirebaseUser user = await userRepo.getUser;
+        userRepo.updateUserData(user);
+        emit(Authenticated(user.uid));
       } else {
         emit(Unauthenticated());
       }

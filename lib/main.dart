@@ -17,7 +17,7 @@ class CubitCounter extends StatelessWidget {
   final UserRepository userRepository = UserRepository();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext pricontext) {
     return MultiCubitProvider(
       providers: [
         CubitProvider<CounterCubit>(
@@ -33,13 +33,12 @@ class CubitCounter extends StatelessWidget {
             if (state is Uninitialized) {
               context.cubit<AuthenticationCubit>().initializeAuth();
               return SplashScreen();
-              return Container(
-                child: Text(state.toString()),
-              );
             } else if (state is Authenticated) {
+              context.cubit<CounterCubit>().initCounter();
               return CounterPage();
             } else {
-              return CounterPage();
+              print(state.toString());
+              return SplashScreen();
             }
           },
         ),
