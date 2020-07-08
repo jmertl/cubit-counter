@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counter/api/counter_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,29 +19,27 @@ class UserRepository {
   Stream<FirebaseUser> get user => _firebaseAuth.onAuthStateChanged;
 
   Future<DocumentReference> userRef() async {
-    return _db.collection('users').document((await getUser).uid);
+    var user = _db.collection('users').document((await getUser).uid);
+    return user;
   }
 
   // Anonymous Firebase login
   Future<FirebaseUser> anonLogin() async {
     AuthResult result = await _firebaseAuth.signInAnonymously();
     FirebaseUser user = result.user;
-
-    updateUserData(user);
     return user;
   }
 
   /// Updates the User's data in Firestore on each new login
   Future<void> updateUserData(FirebaseUser user) async {
     final userReference = await userRef();
-    CounterRepository counterRepo = CounterRepository();
+    CounterRepository counterRepo = CounterRepository(userRepository: this);
 
     var data = await counterRepo.getData();
     if (data == null) {
       counterRepo.initCounter();
     }
 
-    // TODO: There is issue that this is called two times (can be tested by deleteing 'lastActivity' from document)
     DocumentReference reportRef =
         userReference.collection('reports').document('lastActivity');
     return reportRef.setData({'lastActivity': DateTime.now()}, merge: true);
