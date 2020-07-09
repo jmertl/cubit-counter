@@ -38,7 +38,9 @@ class CounterPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100.0),
                       ),
-                      onPressed: context.cubit<CounterCubit>().getCounters,
+                      onPressed: () {
+                        context.cubit<CounterCubit>().update(-1);
+                      },
                       child: Text(
                         '${state.counter.number - 1}',
                         style: GoogleFonts.montserrat(
@@ -57,7 +59,9 @@ class CounterPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100.0),
                       ),
-                      onPressed: context.cubit<CounterCubit>().getCounters,
+                      onPressed: () {
+                        context.cubit<CounterCubit>().update(1);
+                      },
                       child: Text(
                         '${state.counter.number + 1}',
                         style: GoogleFonts.montserrat(
@@ -67,8 +71,12 @@ class CounterPage extends StatelessWidget {
                     ),
                   ],
                 );
-              } else {
-                return Text(state.toString());
+              } else if (state is CounterLoadInProgress) {
+                return Center(
+                    child: Text(
+                  'Loading...',
+                  style: TextStyle(color: Colors.white),
+                ));
               }
             },
           ),

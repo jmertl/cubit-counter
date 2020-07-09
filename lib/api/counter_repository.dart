@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counter/api/models/counter_freeze.dart';
 import 'package:counter/api/user_repository.dart';
 
@@ -25,5 +24,13 @@ class CounterRepository {
         .then((counterCollection) => counterCollection.document('main'))
         .then((counterDoc) => counterDoc.get())
         .then((value) => value.data);
+  }
+
+  Future<void> updateData(Counter counter) async {
+    return userRepository
+        .userRef()
+        .then((userDoc) => userDoc.collection('counters'))
+        .then((counterCollection) => counterCollection.document('main'))
+        .then((counterDoc) => counterDoc.setData(counter.toDocument()));
   }
 }

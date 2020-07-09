@@ -34,7 +34,7 @@ class CubitCounter extends StatelessWidget {
               context.cubit<AuthenticationCubit>().initializeAuth();
               return SplashScreen();
             } else if (state is Authenticated) {
-              context.cubit<CounterCubit>().initCounter();
+              context.cubit<CounterCubit>().getCounters();
               return CounterPage();
             } else {
               print(state.toString());
