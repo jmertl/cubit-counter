@@ -18,6 +18,12 @@ class CounterLoaded extends CounterState {
   final Counter counter;
 }
 
+class CounterUpdateInProgress extends CounterState {
+  CounterUpdateInProgress(this.number);
+
+  final int number;
+}
+
 class CounterLoadFailure extends CounterState {}
 
 // TODO connect with  firebase
@@ -53,11 +59,10 @@ class CounterCubit extends Cubit<CounterState> {
   Future<void> update(int number) async {
     final CounterRepository counterRepo =
         CounterRepository(userRepository: userRepo);
-    emit(CounterLoadInProgress());
+    emit(CounterUpdateInProgress(number));
     try {
       final counter = await counterRepo.getData();
-      Counter newCounter = new Counter(
-          name: counter['name'], number: counter['number'] + number);
+      Counter newCounter = new Counter(name: counter['name'], number: number);
 
       counterRepo.updateData(newCounter);
 
